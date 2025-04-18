@@ -1,0 +1,13 @@
+prefix=/Users/reena/Desktop/Gauri Project/my_env
+exec_prefix=/Users/reena/Desktop/Gauri Project/my_env
+libdir=/Users/reena/Desktop/Gauri Project/my_env/lib
+sharedlibdir=/Users/reena/Desktop/Gauri Project/my_env/lib
+includedir=/Users/reena/Desktop/Gauri Project/my_env/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.2.13
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}
