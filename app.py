@@ -6,11 +6,13 @@ from functools import wraps
 import os
 
 secret_key = os.getenv("SECRET_KEY")
+admin_password = os.getenv('ADMIN_PASSWORD')
+
 
 
 app = Flask(__name__)
 app.secret_key = secret_key
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Booking.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -47,9 +49,7 @@ def init_admin_user():
     """Create admin user if it doesn't exist"""
     admin = User.query.filter_by(username='admin').first()
     if not admin:
-        # Create admin user with default password 'admin123'
-        # You should change this password after first login
-        hashed_password = generate_password_hash('admin123')
+        hashed_password = generate_password_hash(admin_password)
         # Add a default email to fix NOT NULL constraint
         admin = User(username='admin', password=hashed_password, email='admin@example.com')
         db.session.add(admin)
@@ -155,7 +155,7 @@ def availability():
             flash("Invalid date format in URL.", "error")
             selected_date = datetime.now().date()
     else:
-        # If no date parameter, use today's date
+        
         selected_date = datetime.now().date()
 
     rooms = [
@@ -188,5 +188,6 @@ def availability():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Create all tables if they don't exist
-        init_admin_user()  # Initialize admin user
+        if app.config["ENV"] == "development":
+            init_admin_user()# Initialize admin user
     app.run(debug=True, port=4000)
