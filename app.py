@@ -12,7 +12,7 @@ admin_password = os.getenv('ADMIN_PASSWORD')
 
 app = Flask(__name__)
 app.secret_key = secret_key
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
